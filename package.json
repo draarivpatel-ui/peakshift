@@ -1,0 +1,23 @@
+{
+  "name": "peakshift",
+  "version": "1.0.0",
+  "description": "Offline carbon-aware household load shifting planner with exact hour-window scheduling",
+  "type": "module",
+  "main": "src/peakshift.js",
+  "scripts": {
+    "test": "node --test tests/peakshift.test.js",
+    "check:browser": "node scripts/browser-check.mjs",
+    "screenshots": "node scripts/capture-screenshots.mjs",
+    "serve": "node scripts/serve.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/draarivpatel-ui/peakshift.git"
+  },
+  "author": "draarivpatel-ui",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "homepage": "https://aariv.me/peakshift/"
+}

@@ -1,0 +1,151 @@
+{
+ "sr": 24000,
+ "total": 73.888,
+ "lead": 0.561,
+ "gap_sent": 0.28,
+ "gap_para": 0.701,
+ "tail": 0.935,
+ "seed": 1,
+ "overall_rms": 0.10410678386688232,
+ "overall_peak": 0.9399999976158142,
+ "words": 147,
+ "sentences": [
+  {
+   "para": 0,
+   "sent": 0,
+   "text": "PeakShift is an offline home load shifter.",
+   "dur": 2.766,
+   "words": 7,
+   "rms": 0.1261767871760332,
+   "start": 0.561
+  },
+  {
+   "para": 0,
+   "sent": 1,
+   "text": "It plans appliance runs against synthetic hourly grid carbon intensity without accounts or external data.",
+   "dur": 7.103,
+   "words": 15,
+   "rms": 0.12847690884109722,
+   "start": 3.607
+  },
+  {
+   "para": 1,
+   "sent": 0,
+   "text": "Three profiles are included.",
+   "dur": 2.056,
+   "words": 4,
+   "rms": 0.10994829579230457,
+   "start": 11.411
+  },
+  {
+   "para": 1,
+   "sent": 1,
+   "text": "Solar is cleanest at midday, wind overnight, and coal stays carbon intensive all day.",
+   "dur": 5.57,
+   "words": 14,
+   "rms": 0.12706858839247856,
+   "start": 13.748
+  },
+  {
+   "para": 2,
+   "sent": 0,
+   "text": "Each appliance has power, runtime, deadline, flexibility, circuit, and mode.",
+   "dur": 5.009,
+   "words": 10,
+   "rms": 0.12553878951205402,
+   "start": 20.019
+  },
+  {
+   "para": 2,
+   "sent": 1,
+   "text": "One-shot loads stay contiguous.",
+   "dur": 2.131,
+   "words": 4,
+   "rms": 0.10659949030742863,
+   "start": 25.308
+  },
+  {
+   "para": 2,
+   "sent": 2,
+   "text": "Repeatable loads may split.",
+   "dur": 2.019,
+   "words": 4,
+   "rms": 0.11353473237987775,
+   "start": 27.72
+  },
+  {
+   "para": 3,
+   "sent": 0,
+   "text": "The solver searches exact hour placements.",
+   "dur": 2.841,
+   "words": 6,
+   "rms": 0.11253863579857096,
+   "start": 30.439
+  },
+  {
+   "para": 3,
+   "sent": 1,
+   "text": "It honors deadlines, never double-books a circuit, and draws the lowest-carbon schedule over curve.",
+   "dur": 6.542,
+   "words": 14,
+   "rms": 0.12447517125381223,
+   "start": 33.561
+  },
+  {
+   "para": 4,
+   "sent": 0,
+   "text": "Users must acknowledge the results are modeled, not measured, before the summary opens.",
+   "dur": 5.757,
+   "words": 13,
+   "rms": 0.11521723095690824,
+   "start": 40.804
+  },
+  {
+   "para": 4,
+   "sent": 1,
+   "text": "The app names omissions including tariffs, rebound effects, embodied carbon, and efficiency losses.",
+   "dur": 6.654,
+   "words": 13,
+   "rms": 0.11645535629859537,
+   "start": 46.841
+  },
+  {
+   "para": 5,
+   "sent": 0,
+   "text": "The comparison is a naive evening-first plan.",
+   "dur": 2.953,
+   "words": 7,
+   "rms": 0.09694306415150525,
+   "start": 54.196
+  },
+  {
+   "para": 5,
+   "sent": 1,
+   "text": "PeakShift reports both totals and marginal savings per appliance for identical energy demand.",
+   "dur": 6.318,
+   "words": 13,
+   "rms": 0.11353387641445645,
+   "start": 57.43
+  },
+  {
+   "para": 6,
+   "sent": 0,
+   "text": "PeakShift is not a control system or proof of reduction.",
+   "dur": 3.664,
+   "words": 10,
+   "rms": 0.09682236832373381,
+   "start": 64.449
+  },
+  {
+   "para": 6,
+   "sent": 1,
+   "text": "It shows how timing can change emissions when the same work gets done.",
+   "dur": 4.561,
+   "words": 13,
+   "rms": 0.10830937690423333,
+   "start": 68.393
+  }
+ ],
+ "timeCompression": 1.07,
+ "rawTotal": 79.06
+}

@@ -1,0 +1,300 @@
+[
+  {
+    "do": "wait",
+    "ms": 550
+  },
+  {
+    "do": "move",
+    "selector": "#page-title",
+    "ms": 600
+  },
+  {
+    "do": "move",
+    "selector": ".offline-pill",
+    "ms": 700
+  },
+  {
+    "do": "at",
+    "s": 3.61
+  },
+  {
+    "do": "move",
+    "selector": "#intensity-chart",
+    "ms": 900
+  },
+  {
+    "do": "move",
+    "selector": "#stat-low",
+    "ms": 650
+  },
+  {
+    "do": "move",
+    "selector": "#stat-peak",
+    "ms": 650
+  },
+  {
+    "do": "at",
+    "s": 11.41
+  },
+  {
+    "do": "click",
+    "selector": "[data-profile='wind-heavy']"
+  },
+  {
+    "do": "at",
+    "s": 12.55
+  },
+  {
+    "do": "click",
+    "selector": "[data-profile='solar-heavy']"
+  },
+  {
+    "do": "at",
+    "s": 13.75
+  },
+  {
+    "do": "move",
+    "selector": "#intensity-chart",
+    "ms": 500
+  },
+  {
+    "do": "at",
+    "s": 15.45
+  },
+  {
+    "do": "click",
+    "selector": "[data-profile='wind-heavy']"
+  },
+  {
+    "do": "at",
+    "s": 17.2
+  },
+  {
+    "do": "click",
+    "selector": "[data-profile='coal-heavy']"
+  },
+  {
+    "do": "at",
+    "s": 18.95
+  },
+  {
+    "do": "click",
+    "selector": "[data-profile='solar-heavy']"
+  },
+  {
+    "do": "at",
+    "s": 20.02
+  },
+  {
+    "do": "scrollTo",
+    "selector": ".appliance-panel",
+    "ms": 850,
+    "offset": 70
+  },
+  {
+    "do": "move",
+    "selector": "#appliance-rows tr:nth-child(1) [data-field='powerW']",
+    "ms": 420
+  },
+  {
+    "do": "move",
+    "selector": "#appliance-rows tr:nth-child(1) [data-field='runMinutes']",
+    "ms": 420
+  },
+  {
+    "do": "move",
+    "selector": "#appliance-rows tr:nth-child(1) [data-field='deadlineHour']",
+    "ms": 420
+  },
+  {
+    "do": "move",
+    "selector": "#appliance-rows tr:nth-child(1) [data-field='flexibilityHours']",
+    "ms": 420
+  },
+  {
+    "do": "at",
+    "s": 25.31
+  },
+  {
+    "do": "move",
+    "selector": "#appliance-rows tr:nth-child(1) [data-field='mode']",
+    "ms": 450
+  },
+  {
+    "do": "at",
+    "s": 27.72
+  },
+  {
+    "do": "move",
+    "selector": "#appliance-rows tr:nth-child(6) [data-field='mode']",
+    "ms": 450
+  },
+  {
+    "do": "at",
+    "s": 30.44
+  },
+  {
+    "do": "click",
+    "selector": "#solve-button"
+  },
+  {
+    "do": "scrollTo",
+    "selector": "#results",
+    "ms": 950,
+    "offset": 78
+  },
+  {
+    "do": "at",
+    "s": 33.56
+  },
+  {
+    "do": "move",
+    "selector": "#timeline",
+    "ms": 700
+  },
+  {
+    "do": "move",
+    "selector": ".lane-row:nth-child(1) .hour-cell.filled",
+    "ms": 600
+  },
+  {
+    "do": "move",
+    "selector": ".lane-row:nth-child(2) .hour-cell.filled",
+    "ms": 600
+  },
+  {
+    "do": "scrollBy",
+    "y": 280,
+    "ms": 800
+  },
+  {
+    "do": "at",
+    "s": 40.8
+  },
+  {
+    "do": "scrollTo",
+    "selector": "#ack-panel",
+    "ms": 750,
+    "offset": 210
+  },
+  {
+    "do": "click",
+    "selector": "#acknowledge-model"
+  },
+  {
+    "do": "click",
+    "selector": "#reveal-summary"
+  },
+  {
+    "do": "at",
+    "s": 46.84
+  },
+  {
+    "do": "scrollTo",
+    "selector": "#limits",
+    "ms": 1100,
+    "offset": 80
+  },
+  {
+    "do": "move",
+    "selector": ".limits-list article:nth-child(1)",
+    "ms": 620
+  },
+  {
+    "do": "move",
+    "selector": ".limits-list article:nth-child(3)",
+    "ms": 620
+  },
+  {
+    "do": "move",
+    "selector": ".limits-list article:nth-child(5)",
+    "ms": 620
+  },
+  {
+    "do": "at",
+    "s": 54.2
+  },
+  {
+    "do": "scrollTo",
+    "selector": "#summary-panel",
+    "ms": 1100,
+    "offset": 100
+  },
+  {
+    "do": "move",
+    "selector": "#metric-naive",
+    "ms": 500
+  },
+  {
+    "do": "at",
+    "s": 57.43
+  },
+  {
+    "do": "move",
+    "selector": "#metric-optimized",
+    "ms": 500
+  },
+  {
+    "do": "move",
+    "selector": "#metric-saving",
+    "ms": 500
+  },
+  {
+    "do": "scrollBy",
+    "y": 220,
+    "ms": 800
+  },
+  {
+    "do": "move",
+    "selector": "#savings-rows tr:nth-child(1)",
+    "ms": 520
+  },
+  {
+    "do": "move",
+    "selector": "#savings-rows tr:nth-child(4)",
+    "ms": 520
+  },
+  {
+    "do": "at",
+    "s": 64.45
+  },
+  {
+    "do": "scrollTo",
+    "selector": "#model",
+    "ms": 1000,
+    "offset": 80
+  },
+  {
+    "do": "move",
+    "selector": ".model-facts",
+    "ms": 600
+  },
+  {
+    "do": "at",
+    "s": 68.39
+  },
+  {
+    "do": "scrollTo",
+    "selector": "#summary-panel",
+    "ms": 1000,
+    "offset": 100
+  },
+  {
+    "do": "move",
+    "selector": "#metric-saving",
+    "ms": 600
+  },
+  {
+    "do": "move",
+    "selector": "#print-report",
+    "ms": 500
+  },
+  {
+    "do": "at",
+    "s": 73.7
+  },
+  {
+    "do": "wait",
+    "ms": 300
+  }
+]

@@ -1,0 +1,13 @@
+PeakShift is an offline home load shifter. It plans appliance runs against synthetic hourly grid carbon intensity without accounts or external data.
+
+Three profiles are included. Solar is cleanest at midday, wind overnight, and coal stays carbon intensive all day.
+
+Each appliance has power, runtime, deadline, flexibility, circuit, and mode. One-shot loads stay contiguous. Repeatable loads may split.
+
+The solver searches exact hour placements. It honors deadlines, never double-books a circuit, and draws the lowest-carbon schedule over curve.
+
+Users must acknowledge the results are modeled, not measured, before the summary opens. The app names omissions including tariffs, rebound effects, embodied carbon, and efficiency losses.
+
+The comparison is a naive evening-first plan. PeakShift reports both totals and marginal savings per appliance for identical energy demand.
+
+PeakShift is not a control system or proof of reduction. It shows how timing can change emissions when the same work gets done.

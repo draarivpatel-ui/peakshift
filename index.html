@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PeakShift - offline carbon-aware load shifting</title>
+  <meta name="description" content="PeakShift schedules flexible household appliances against synthetic hourly grid carbon intensity, fully offline.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#planner">Skip to planner</a>
+
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="PeakShift home">
+      <svg aria-hidden="true" viewBox="0 0 32 32" width="28" height="28">
+        <path d="M4 22 L10 12 L15 18 L21 6 L28 22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M4 26 H28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+      </svg>
+      <span>PeakShift</span>
+    </a>
+    <nav class="site-nav" aria-label="Page sections">
+      <a href="#planner">Planner</a>
+      <a href="#results" id="results-link">Results</a>
+      <a href="#limits">Limits</a>
+      <a href="#model">Model</a>
+    </nav>
+    <span class="offline-pill">Offline static app</span>
+  </header>
+
+  <main>
+    <section class="planner-section" id="planner" aria-labelledby="page-title">
+      <div class="title-row">
+        <h1 id="page-title">PeakShift</h1>
+        <div class="title-meta">
+          <span>Built Nov 2026</span>
+          <span>Synthetic data</span>
+        </div>
+      </div>
+
+      <div class="planner-grid">
+        <section class="panel grid-panel" aria-labelledby="grid-title">
+          <div class="panel-heading">
+            <h2 id="grid-title">Grid day</h2>
+            <button class="ghost-button" type="button" id="reset-sample">Reset sample</button>
+          </div>
+
+          <div class="profile-picker" role="radiogroup" aria-label="Synthetic grid profile">
+            <button type="button" class="profile-option" data-profile="solar-heavy" role="radio" aria-checked="true">
+              <span class="profile-name">Solar-heavy</span>
+              <span class="profile-swath solar" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="profile-option" data-profile="wind-heavy" role="radio" aria-checked="false">
+              <span class="profile-name">Wind-heavy</span>
+              <span class="profile-swath wind" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="profile-option" data-profile="coal-heavy" role="radio" aria-checked="false">
+              <span class="profile-name">Coal-heavy</span>
+              <span class="profile-swath coal" aria-hidden="true"></span>
+            </button>
+          </div>
+          <p class="profile-note" id="profile-note"></p>
+
+          <div class="chart-shell">
+            <svg id="intensity-chart" class="intensity-chart" role="img" aria-labelledby="chart-title chart-desc" viewBox="0 0 720 300" preserveAspectRatio="none">
+              <title id="chart-title">Synthetic hourly grid carbon intensity</title>
+              <desc id="chart-desc">Twenty-four hourly bars with a line showing grams of CO2 per kilowatt-hour for the selected synthetic grid profile.</desc>
+            </svg>
+          </div>
+
+          <dl class="profile-stats" aria-label="Selected profile statistics">
+            <div>
+              <dt>Lowest hour</dt>
+              <dd id="stat-low">-</dd>
+            </div>
+            <div>
+              <dt>Evening peak</dt>
+              <dd id="stat-peak">-</dd>
+            </div>
+            <div>
+              <dt>Day average</dt>
+              <dd id="stat-average">-</dd>
+            </div>
+          </dl>
+
+          <details class="json-tools" id="json-tools">
+            <summary>Custom JSON input</summary>
+            <p>Paste a planning object with an intensity profile or 24 hourly values plus an appliance array. Validation rejects malformed or impossible input before the solver runs.</p>
+            <label class="textarea-label" for="json-input">Planning JSON</label>
+            <textarea id="json-input" rows="9" spellcheck="false"></textarea>
+            <div class="button-row">
+              <button type="button" class="secondary-button" id="apply-json">Apply JSON</button>
+              <button type="button" class="ghost-button" id="export-json">Export current JSON</button>
+            </div>
+          </details>
+        </section>
+
+        <section class="panel appliance-panel" aria-labelledby="appliance-title">
+          <div class="panel-heading appliance-heading">
+            <h2 id="appliance-title">Appliance queue</h2>
+            <div class="heading-actions">
+              <button class="ghost-button" type="button" id="add-appliance">Add appliance</button>
+              <button class="primary-button" type="button" id="solve-button">Plan lowest-carbon schedule</button>
+            </div>
+          </div>
+
+          <div class="table-scroll" tabindex="0" aria-label="Editable appliance table">
+            <table class="appliance-table">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Power W</th>
+                  <th scope="col">Run min</th>
+                  <th scope="col">Finish by</th>
+                  <th scope="col">Flex h</th>
+                  <th scope="col">Mode</th>
+                  <th scope="col">Circuit</th>
+                  <th scope="col"><span class="visually-hidden">Remove</span></th>
+                </tr>
+              </thead>
+              <tbody id="appliance-rows"></tbody>
+            </table>
+          </div>
+
+          <div class="input-help">
+            <p><strong>Finish by</strong> is the preferred end of the run, counted as an hour from midnight. <strong>Flex h</strong> extends that deadline inside the same day. One-shot runs stay contiguous. Repeatable runs may split into separate hour slots.</p>
+          </div>
+
+          <div class="error-panel" id="error-panel" role="alert" hidden></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="results-section" id="results" aria-labelledby="results-title" hidden>
+      <div class="results-heading-row">
+        <h2 id="results-title">Optimized schedule</h2>
+        <p class="search-meta" id="search-meta"></p>
+      </div>
+
+      <div class="timeline-panel panel">
+        <div class="timeline-topline">
+          <h3>Circuit reservations by hour</h3>
+          <div class="timeline-legend" id="timeline-legend"></div>
+        </div>
+        <div class="timeline-wrap" id="timeline" aria-label="Optimized appliance schedule"></div>
+        <div class="hour-axis" aria-hidden="true">
+          <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span>
+        </div>
+      </div>
+
+      <div class="ack-panel" id="ack-panel">
+        <div>
+          <h3>Modeled or measured?</h3>
+          <p>This schedule is computed from synthetic hourly intensity and nameplate appliance power. It is not measured utility data, meter data, bill data or proof of real-world emissions reduction.</p>
+        </div>
+        <label class="ack-check" for="acknowledge-model">
+          <input type="checkbox" id="acknowledge-model">
+          <span>I understand that the result is modeled, not measured.</span>
+        </label>
+        <button type="button" class="primary-button" id="reveal-summary" disabled>Show modeled summary</button>
+      </div>
+
+      <div class="summary-panel" id="summary-panel" hidden>
+        <div class="summary-heading-row">
+          <h3>Modeled summary</h3>
+          <div class="button-row">
+            <button type="button" class="secondary-button" id="download-report">Download JSON report</button>
+            <button type="button" class="ghost-button" id="print-report">Print summary</button>
+          </div>
+        </div>
+
+        <dl class="metric-grid" aria-label="Plan comparison totals">
+          <div class="metric optimized">
+            <dt>Optimized plan</dt>
+            <dd id="metric-optimized">-</dd>
+          </div>
+          <div class="metric naive">
+            <dt>Naive evening plan</dt>
+            <dd id="metric-naive">-</dd>
+          </div>
+          <div class="metric saving">
+            <dt>Modeled saving</dt>
+            <dd id="metric-saving">-</dd>
+          </div>
+          <div class="metric percent">
+            <dt>Reduction</dt>
+            <dd id="metric-percent">-</dd>
+          </div>
+        </dl>
+
+        <div class="table-scroll savings-scroll" tabindex="0" aria-label="Per appliance savings table">
+          <table class="savings-table">
+            <thead>
+              <tr>
+                <th scope="col">Appliance</th>
+                <th scope="col">Naive window</th>
+                <th scope="col">Optimized window</th>
+                <th scope="col">Energy</th>
+                <th scope="col">Marginal saving</th>
+              </tr>
+            </thead>
+            <tbody id="savings-rows"></tbody>
+          </table>
+        </div>
+        <p class="savings-note">Marginal saving is the same appliance's modeled naive emissions minus its modeled optimized emissions. The rows sum exactly to the plan total because both plans use the same energy demand.</p>
+      </div>
+    </section>
+
+    <section class="limits-section" id="limits" aria-labelledby="limits-title">
+      <h2 id="limits-title">What this does not model</h2>
+      <div class="limits-list">
+        <article>
+          <h3>Embodied carbon</h3>
+          <p>Manufacturing, shipping, installation and disposal of appliances, batteries, wiring or the device running this page are outside the boundary.</p>
+        </article>
+        <article>
+          <h3>Rebound effects</h3>
+          <p>A lower-carbon schedule can make a load feel cheaper or cleaner and encourage more use. The model keeps energy demand fixed and does not predict behavior change.</p>
+        </article>
+        <article>
+          <h3>Tariffs and bills</h3>
+          <p>No time-of-use tariff, demand charge, tax, fixed fee, solar export rule or utility bill is modeled. Carbon-optimal hours are not automatically bill-optimal hours.</p>
+        </article>
+        <article>
+          <h3>Efficiency losses</h3>
+          <p>Standby draw, inverter loss, power factor, motor ramps, thermostat cycles, heating inefficiency and partial-load behavior are simplified into constant nameplate watts.</p>
+        </article>
+        <article>
+          <h3>Measured marginal emissions</h3>
+          <p>The three curves are synthetic average-intensity shapes. They are not locational marginal emissions, real-time grid telemetry or a forecast for any named balancing authority.</p>
+        </article>
+        <article>
+          <h3>Household infrastructure</h3>
+          <p>Panel capacity, wire sizing, breaker coordination, voltage drop, solar self-consumption, battery round trips and utility demand-response rules are not simulated.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="model-section" id="model" aria-labelledby="model-title">
+      <h2 id="model-title">Model contract</h2>
+      <div class="model-grid">
+        <div class="model-copy">
+          <p>PeakShift divides the day into 24 hourly carbon-intensity slots. Each appliance run is rounded up to whole-hour circuit reservations, while emissions are prorated by the actual run minutes inside those hours. One-shot appliances must use consecutive hours. Repeatable appliances may split across non-consecutive hours. Deadlines are hard at the preferred hour plus the declared flexibility.</p>
+          <p>The solver enumerates legal hour placements and uses exact branch-and-bound search per circuit. It never double-books an hour on one circuit, uses deterministic cost and lexicographic tie-breaking, and reports an honest search-space error instead of silently approximating when an instance is too large.</p>
+        </div>
+        <dl class="model-facts">
+          <div><dt>Runtime</dt><dd>Browser or Node 22+</dd></div>
+          <div><dt>Dependencies</dt><dd>Zero</dd></div>
+          <div><dt>Network</dt><dd>None required</dd></div>
+          <div><dt>Resolution</dt><dd>Hourly circuit reservations</dd></div>
+          <div><dt>Comparison</dt><dd>Naive 18:00-first plan</dd></div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>PeakShift is an offline educational model with synthetic data. It does not control appliances and does not provide energy, safety or financial advice.</p>
+  </footer>
+</body>
+</html>
